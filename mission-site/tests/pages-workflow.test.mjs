@@ -35,8 +35,16 @@ describe("GitHub Pages workflow", () => {
       /defaults:\s+run:\s+working-directory: mission-site/,
     );
     expect(workflow).toContain("path: mission-site/dist/client");
-    expect(workflow).toContain(
-      "NEXT_PUBLIC_SITE_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}",
+    expect(workflow).toMatch(
+      /- name: Setup Pages\s+id: pages\s+uses: actions\/configure-pages@v5/,
     );
+    expect(workflow).toContain(
+      "NEXT_PUBLIC_BASE_PATH: ${{ steps.pages.outputs.base_path }}",
+    );
+    expect(workflow).toContain(
+      "NEXT_PUBLIC_SITE_URL: ${{ steps.pages.outputs.base_url }}",
+    );
+    expect(workflow).not.toContain("github.repository_owner");
+    expect(workflow).not.toContain("github.event.repository.name");
   });
 });
