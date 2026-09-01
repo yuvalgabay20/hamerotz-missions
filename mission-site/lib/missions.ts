@@ -8,16 +8,18 @@ export type Mission = Readonly<{
   videoPoster?: string;
 }>;
 
-const missions = {
-  "01": {
-    id: "01",
-    pageType: "סימן דרך",
-    questionNumber: 1,
-    question: "באיזו עיר נמצא מגדל אייפל?",
-    answers: ["פריז", "רומא", "לונדון", "מדריד"],
-    videoFile: "/videos/mission-01.mp4",
-  },
-} as const satisfies Record<string, Mission>;
+const mission01 = Object.freeze({
+  id: "01",
+  pageType: "סימן דרך",
+  questionNumber: 1,
+  question: "באיזו עיר נמצא מגדל אייפל?",
+  answers: Object.freeze(["פריז", "רומא", "לונדון", "מדריד"] as const),
+  videoFile: "/videos/mission-01.mp4",
+} satisfies Mission);
+
+const missions = Object.freeze({
+  "01": mission01,
+} satisfies Record<string, Mission>);
 
 export const missionIds = Object.freeze(Object.keys(missions));
 

@@ -17,4 +17,11 @@ describe("mission catalogue", () => {
     expect(getMission("99")).toBeUndefined();
     expect(missionIds).toEqual(["01"]);
   });
+
+  it("freezes mission 01 and its answers at runtime", () => {
+    const mission = getMission("01");
+    expect(mission).toBeDefined();
+    expect(Object.isFrozen(mission)).toBe(true);
+    expect(Object.isFrozen(mission?.answers)).toBe(true);
+  });
 });
