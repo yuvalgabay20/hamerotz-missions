@@ -8,7 +8,7 @@
   "scripts": {
     "dev": "vinext dev",
     "build": "vinext build",
-    "build:pages": "npm run check:videos && node scripts/patch-vinext-static-export.mjs && vinext build && node scripts/normalize-pages-assets.mjs",
+    "build:pages": "npm run check:videos && node scripts/patch-vinext-static-export.mjs && vinext build && node scripts/normalize-pages-assets.mjs && node scripts/verify-pages-artifact.mjs",
     "check:videos": "node scripts/check-video-size.mjs",
     "start": "wrangler dev --config dist/server/wrangler.json",
     "lint": "oxlint",

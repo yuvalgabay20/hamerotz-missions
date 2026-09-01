@@ -1,8 +1,20 @@
-import { existsSync, readdirSync, renameSync, rmdirSync } from "node:fs";
+import {
+  copyFileSync,
+  existsSync,
+  readdirSync,
+  renameSync,
+  rmdirSync,
+} from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 export function normalizePagesAssets(clientDirectory, basePath) {
+  const rootSurface = join(clientDirectory, "index.html");
+  if (!existsSync(rootSurface)) {
+    throw new Error("Vinext root surface was not exported.");
+  }
+  copyFileSync(rootSurface, join(clientDirectory, "404.html"));
+
   const segments = basePath.split("/").filter(Boolean);
 
   if (segments.length === 0) {

@@ -35,5 +35,8 @@ describe("GitHub Pages workflow", () => {
       /defaults:\s+run:\s+working-directory: mission-site/,
     );
     expect(workflow).toContain("path: mission-site/dist/client");
+    expect(workflow).toContain(
+      "NEXT_PUBLIC_SITE_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}",
+    );
   });
 });

@@ -52,6 +52,7 @@
   --race-navy: #061d4f;
   --race-blue: #0b347b;
   --race-gold: #c89218;
+  --race-gold-text: #8a5d00;
   --race-gold-light: #e7b943;
   --race-paper: #fffdfa;
   --race-ink-muted: #5c6574;
@@ -218,7 +219,7 @@ body {
 
 .mission-number {
   margin: 22px 0 8px;
-  color: var(--race-gold);
+  color: var(--race-gold-text);
   font-size: 0.88rem;
   font-weight: 850;
   letter-spacing: 0.04em;
