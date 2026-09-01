@@ -18,39 +18,54 @@ const ORIGINAL_METADATA_OUTPUT =
 const PATCHED_METADATA_OUTPUT =
   'const outputPath = mode === "export" ? metadataOutputPath(urlPath) : getAppRouteOutputPath(urlPath);';
 
+function occurrenceCount(source, anchor) {
+  return source.split(anchor).length - 1;
+}
+
 export function patchVinextPrerenderSource(source) {
-  let patched = source;
+  const counts = {
+    requestPath: occurrenceCount(source, PRERENDER_REQUEST_PATH),
+    originalHtml: occurrenceCount(source, ORIGINAL_HTML_REQUEST),
+    patchedHtml: occurrenceCount(source, PATCHED_HTML_REQUEST),
+    originalRsc: occurrenceCount(source, ORIGINAL_RSC_REQUEST),
+    patchedRsc: occurrenceCount(source, PATCHED_RSC_REQUEST),
+    originalMetadata: occurrenceCount(source, ORIGINAL_METADATA_OUTPUT),
+    patchedMetadata: occurrenceCount(source, PATCHED_METADATA_OUTPUT),
+  };
+  const fullyOriginal =
+    counts.requestPath === 0 &&
+    counts.originalHtml === 1 &&
+    counts.patchedHtml === 0 &&
+    counts.originalRsc === 1 &&
+    counts.patchedRsc === 0 &&
+    counts.originalMetadata === 1 &&
+    counts.patchedMetadata === 0;
+  const fullyPatched =
+    counts.requestPath === 1 &&
+    counts.originalHtml === 0 &&
+    counts.patchedHtml === 1 &&
+    counts.originalRsc === 0 &&
+    counts.patchedRsc === 1 &&
+    counts.originalMetadata === 0 &&
+    counts.patchedMetadata === 1;
 
-  if (!patched.includes(PRERENDER_REQUEST_PATH)) {
-    if (
-      !patched.includes(ORIGINAL_HTML_REQUEST) ||
-      !patched.includes(ORIGINAL_RSC_REQUEST)
-    ) {
-      throw new Error(
-        "Vinext prerender request internals changed; review the static-export compatibility patch.",
-      );
-    }
-
-    patched = patched
-      .replace(
-        ORIGINAL_HTML_REQUEST,
-        `${PRERENDER_REQUEST_PATH}\n\t\t\t\t${PATCHED_HTML_REQUEST}`,
-      )
-      .replace(ORIGINAL_RSC_REQUEST, PATCHED_RSC_REQUEST);
+  if (fullyPatched) {
+    return source;
   }
 
-  if (patched.includes(ORIGINAL_METADATA_OUTPUT)) {
-    patched = patched.replace(
-      ORIGINAL_METADATA_OUTPUT,
-      PATCHED_METADATA_OUTPUT,
-    );
-  } else if (!patched.includes(PATCHED_METADATA_OUTPUT)) {
+  if (!fullyOriginal) {
     throw new Error(
-      "Vinext metadata export internals changed; review the static-export compatibility patch.",
+      "Vinext prerender source is partially patched or corrupt. Review the static-export compatibility patch.",
     );
   }
 
-  return patched;
+  return source
+    .replace(
+      ORIGINAL_HTML_REQUEST,
+      `${PRERENDER_REQUEST_PATH}\n\t\t\t\t${PATCHED_HTML_REQUEST}`,
+    )
+    .replace(ORIGINAL_RSC_REQUEST, PATCHED_RSC_REQUEST)
+    .replace(ORIGINAL_METADATA_OUTPUT, PATCHED_METADATA_OUTPUT);
 }
 
 const scriptPath = fileURLToPath(import.meta.url);
