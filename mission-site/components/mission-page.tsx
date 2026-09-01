@@ -1,5 +1,4 @@
 /* oxlint-disable next/no-img-element */
-/* oxlint-disable jsx-a11y/media-has-caption */
 import type { Mission } from "@/lib/missions";
 import { VideoPlayer } from "@/components/video-player";
 import { sitePath } from "@/lib/site-path";
