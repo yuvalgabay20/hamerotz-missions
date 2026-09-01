@@ -1,6 +1,7 @@
 /* oxlint-disable next/no-img-element */
 /* oxlint-disable jsx-a11y/media-has-caption */
 import type { Mission } from "@/lib/missions";
+import { VideoPlayer } from "@/components/video-player";
 import { sitePath } from "@/lib/site-path";
 
 export function MissionPage({ mission }: { mission: Mission }) {
@@ -22,16 +23,11 @@ export function MissionPage({ mission }: { mission: Mission }) {
             <li key={answer}>{answer}</li>
           ))}
         </ol>
-        <video
-          className="mission-video"
-          aria-label={`סרטון משימה ${mission.questionNumber}`}
-          controls
-          playsInline
-          preload="metadata"
-          src={sitePath(mission.videoFile)}
-        >
-          הדפדפן אינו תומך בניגון הסרטון.
-        </video>
+        <VideoPlayer
+          src={mission.videoFile}
+          poster={mission.videoPoster}
+          title={`סרטון משימה ${mission.questionNumber}`}
+        />
       </article>
     </main>
   );
