@@ -12,7 +12,7 @@ describe("MissionPage", () => {
     expect(screen.getByRole("heading", { name: "תחנה ראשונה" })).toBeVisible();
     expect(screen.getByText(/התחנה הזו במירוץ/)).toBeVisible();
     for (const answer of [
-      "עולם שבו גולדי היא כלבה ממושמעת ומאולפת.",
+      "עולם שבו גולדי הוא כלב ממושמע ומאולף.",
       "עולם שבו רמזים, קסמים ושרביטים יכולים לפתוח דלתות.",
       "עולם שבו אוריה זוכרת הכול.",
       "עולם שבו יובל חושב רק חמש מחשבות ביום.",
