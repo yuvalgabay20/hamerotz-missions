@@ -9,10 +9,14 @@ describe("MissionPage", () => {
     if (!mission) throw new Error("mission 01 missing");
     render(<MissionPage mission={mission} />);
 
-    expect(screen.getByRole("heading", { name: "סימן דרך" })).toBeVisible();
-    expect(screen.getByText("שאלה 1")).toBeVisible();
-    expect(screen.getByText("באיזו עיר נמצא מגדל אייפל?")).toBeVisible();
-    for (const answer of ["פריז", "רומא", "לונדון", "מדריד"]) {
+    expect(screen.getByRole("heading", { name: "תחנה ראשונה" })).toBeVisible();
+    expect(screen.getByText(/התחנה הזו במירוץ/)).toBeVisible();
+    for (const answer of [
+      "עולם שבו גולדי היא כלבה ממושמעת ומאולפת.",
+      "עולם שבו רמזים, קסמים ושרביטים יכולים לפתוח דלתות.",
+      "עולם שבו אוריה זוכרת הכול.",
+      "עולם שבו יובל חושב רק חמש מחשבות ביום.",
+    ]) {
       expect(screen.getByText(answer)).toBeVisible();
     }
     expect(screen.queryAllByRole("button")).toHaveLength(0);
@@ -29,7 +33,6 @@ describe("MissionPage", () => {
     expect(Array.from(card!.children, (element) => element.tagName)).toEqual([
       "IMG",
       "H1",
-      "P",
       "H2",
       "OL",
       "VIDEO",
@@ -45,10 +48,22 @@ describe("MissionPage", () => {
     }
 
     const video = container.querySelector("video");
+    expect(video).toHaveAttribute("aria-label", "סרטון תחנה ראשונה");
     expect(video).toHaveAttribute("controls");
     expect(video).toHaveAttribute("playsinline");
     expect(video).toHaveAttribute("preload", "metadata");
     expect(video).not.toHaveAttribute("autoplay");
     expect(video).toHaveAttribute("src", "/videos/mission-01.mp4");
+  });
+
+  it("renders the comic station without answer choices and with its follow-up note", () => {
+    const mission = getMission("04");
+    if (!mission) throw new Error("mission 04 missing");
+    render(<MissionPage mission={mission} />);
+
+    expect(screen.getByRole("heading", { name: "תחנה רביעית" })).toBeVisible();
+    expect(screen.getByText(/לא כל משימה במירוץ/)).toBeVisible();
+    expect(screen.queryAllByRole("listitem")).toHaveLength(0);
+    expect(screen.getByText(/מסעדת סושי/)).toBeVisible();
   });
 });

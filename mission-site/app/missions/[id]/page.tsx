@@ -24,7 +24,7 @@ export async function generateMetadata({
   }
 
   return {
-    title: `${mission.pageType} — שאלה ${mission.questionNumber}`,
+    title: mission.pageType,
     robots: { index: false, follow: false },
   };
 }

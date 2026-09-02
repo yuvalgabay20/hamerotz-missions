@@ -11,14 +11,23 @@ import MissionRoute, {
 describe("mission route", () => {
   it("generates only catalogue routes and disables unknown dynamic params", () => {
     expect(dynamicParams).toBe(false);
-    expect(generateStaticParams()).toEqual([{ id: "01" }]);
+    expect(generateStaticParams()).toEqual([
+      { id: "01" },
+      { id: "02" },
+      { id: "03" },
+      { id: "04" },
+      { id: "05" },
+      { id: "06" },
+      { id: "07" },
+      { id: "08" },
+    ]);
   });
 
   it("sets mission-specific noindex metadata", async () => {
     await expect(
       generateMetadata({ params: Promise.resolve({ id: "01" }) }),
     ).resolves.toMatchObject({
-      title: "סימן דרך — שאלה 1",
+      title: "תחנה ראשונה",
       robots: { index: false, follow: false },
     });
   });
@@ -26,7 +35,7 @@ describe("mission route", () => {
   it("renders the catalogue mission at its direct route", async () => {
     render(await MissionRoute({ params: Promise.resolve({ id: "01" }) }));
     expect(
-      screen.getByRole("heading", { name: "באיזו עיר נמצא מגדל אייפל?" }),
+      screen.getByRole("heading", { name: "תחנה ראשונה" }),
     ).toBeVisible();
   });
 });

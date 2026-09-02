@@ -15,17 +15,21 @@ export function MissionPage({ mission }: { mission: Mission }) {
           height="220"
         />
         <h1 className="mission-page-type">{mission.pageType}</h1>
-        <p className="mission-number">שאלה {mission.questionNumber}</p>
         <h2 className="mission-question">{mission.question}</h2>
-        <ol className="mission-answers">
-          {mission.answers.map((answer) => (
-            <li key={answer}>{answer}</li>
-          ))}
-        </ol>
+        {mission.answers ? (
+          <ol className="mission-answers">
+            {mission.answers.map((answer) => (
+              <li key={answer}>{answer}</li>
+            ))}
+          </ol>
+        ) : null}
+        {mission.followUp ? (
+          <p className="mission-follow-up">{mission.followUp}</p>
+        ) : null}
         <VideoPlayer
           src={mission.videoFile}
           poster={mission.videoPoster}
-          title={`סרטון משימה ${mission.questionNumber}`}
+          title={`סרטון ${mission.pageType}`}
         />
       </article>
     </main>

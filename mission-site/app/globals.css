@@ -233,6 +233,7 @@ body {
   font-weight: 800;
   line-height: 1.28;
   text-wrap: balance;
+  white-space: pre-line;
 }
 
 .mission-answers {
@@ -260,6 +261,20 @@ body {
   line-height: 1.5;
   text-align: right;
   counter-increment: answers;
+}
+
+.mission-follow-up {
+  max-width: 600px;
+  margin: 0 auto 32px;
+  padding: 20px 22px;
+  border-inline-start: 5px solid var(--race-gold);
+  background: linear-gradient(90deg, rgb(200 146 24 / 8%), rgb(6 29 79 / 2%));
+  color: var(--race-navy);
+  font-size: 1.08rem;
+  font-weight: 700;
+  line-height: 1.65;
+  text-align: right;
+  white-space: pre-line;
 }
 
 .mission-answers li::before {
