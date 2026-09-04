@@ -5,10 +5,15 @@ export type Mission = Readonly<{
   answers?: readonly [string, string, string, string];
   followUp?: string;
   videoFile: string;
+  video4k?: string;
   videoPoster?: string;
 }>;
 
-const videoFile = "/videos/mission-01.mp4";
+const videoFiles = (number: number) => ({
+  videoFile: `/videos/video-${String(number).padStart(2, "0")}.mp4`,
+  video4k: `/videos/video-${String(number).padStart(2, "0")}-4k.mp4`,
+  videoPoster: "/brand/video-poster.jpg",
+});
 
 const mission01 = Object.freeze({
   id: "01",
@@ -21,7 +26,7 @@ const mission01 = Object.freeze({
     "עולם שבו אוריה זוכרת הכול.",
     "עולם שבו יובל חושב רק חמש מחשבות ביום.",
   ] as const),
-  videoFile,
+  ...videoFiles(2),
 } satisfies Mission);
 
 const mission02 = Object.freeze({
@@ -35,7 +40,7 @@ const mission02 = Object.freeze({
     "מקום שבו שוברים הכול.",
     "מסאז׳ תאילנדי לשחרור המתחים.",
   ] as const),
-  videoFile,
+  ...videoFiles(3),
 } satisfies Mission);
 
 const mission03 = Object.freeze({
@@ -44,17 +49,23 @@ const mission03 = Object.freeze({
   question:
     "היעד הבא שלכם יישאר חסוי עד שתגיעו אליו. כדי להעביר את הזמן תענו על השאלה הבאה:\n\nבאיזו מחתרת פעלה שרה אהרונסון?",
   answers: Object.freeze(["הפלמ״ח.", "השומר.", "ניל״י.", "לח״י."] as const),
-  videoFile,
+  ...videoFiles(5),
 } satisfies Mission);
 
 const mission04 = Object.freeze({
   id: "04",
   pageType: "תחנה רביעית",
   question:
-    "לא כל משימה במירוץ דורשת לרוץ.\n\nלפעמים צריך לעצור ולפתוח סיפור שנכתב במיוחד בשבילך.\n\nפתחי את החבילה שלפנייך וקראי עד העמוד האחרון.",
+    "לא כל משימה במירוץ דורשת לרוץ.\n\nמה אוריה הכי אוהבת לאכול?",
+  answers: Object.freeze([
+    "מלוואח דפי אורז.",
+    "רולדה.",
+    "סושי.",
+    "כנאפה.",
+  ] as const),
   followUp:
-    "היום הראשון במירוץ כמעט הגיע לסיומו.\n\nכדי לצבור כוחות לקראת המשך המירוץ מחר, מחכה לכם הערב ארוחה במסעדת סושי.\n\nבתיאבון, המירוץ יימשך מחר.",
-  videoFile,
+    "אחרי שענית, פתחי את החבילה שלפנייך וקראי את הקומיקס עד העמוד האחרון.\n\nהיום הראשון במירוץ כמעט הגיע לסיומו.\n\nכדי לצבור כוחות לקראת המשך המירוץ מחר, מחכה לכם הערב ארוחה במסעדת סושי.\n\nבתיאבון, המירוץ יימשך מחר.",
+  ...videoFiles(6),
 } satisfies Mission);
 
 const mission05 = Object.freeze({
@@ -68,7 +79,7 @@ const mission05 = Object.freeze({
     "גבינת עובש.",
     "אוריה אלון + יין.",
   ] as const),
-  videoFile,
+  ...videoFiles(8),
 } satisfies Mission);
 
 const mission06 = Object.freeze({
@@ -82,7 +93,7 @@ const mission06 = Object.freeze({
     "עמק הנדיב.",
     "מישור הנדיב.",
   ] as const),
-  videoFile,
+  ...videoFiles(7),
 } satisfies Mission);
 
 const mission07 = Object.freeze({
@@ -96,7 +107,7 @@ const mission07 = Object.freeze({
     "מתנות.",
     "רכיבה על גמלים.",
   ] as const),
-  videoFile,
+  ...videoFiles(9),
 } satisfies Mission);
 
 const mission08 = Object.freeze({
@@ -105,7 +116,7 @@ const mission08 = Object.freeze({
   question:
     "לקראת קו הסיום, נותרה שאלה אחת חשובה במיוחד:\n\nמה יובל הכי אוהב לאכול?",
   answers: Object.freeze(["עלים.", "דיונונים.", "פיצה.", "בשר."] as const),
-  videoFile,
+  ...videoFiles(10),
 } satisfies Mission);
 
 const missions = Object.freeze({
@@ -117,6 +128,18 @@ const missions = Object.freeze({
   "06": mission06,
   "07": mission07,
   "08": mission08,
+  "welcome": Object.freeze({
+    id: "welcome",
+    pageType: "ברוכים הבאים למירוץ",
+    question: "לכבוד: אוריה אלון ויובל גבאי\n\nהמירוץ שלכם עומד להתחיל.\nמוכנים לצאת לדרך?",
+    ...videoFiles(1),
+  } satisfies Mission),
+  "next-clue": Object.freeze({
+    id: "next-clue",
+    pageType: "הרמז הבא",
+    question: "עברתם חידות ומבוכים, שברתם את כל הכלים.\n\nעכשיו הרמז הבא קרוב יותר ממה שאתם חושבים.\n\nאוריה, הסתכלי ממש מעלייך.",
+    ...videoFiles(4),
+  } satisfies Mission),
 } satisfies Record<string, Mission>);
 
 export const missionIds = Object.freeze(Object.keys(missions));

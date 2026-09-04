@@ -20,6 +20,8 @@ describe("mission route", () => {
       { id: "06" },
       { id: "07" },
       { id: "08" },
+      { id: "welcome" },
+      { id: "next-clue" },
     ]);
   });
 

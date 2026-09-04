@@ -36,6 +36,7 @@ describe("MissionPage", () => {
       "H2",
       "OL",
       "VIDEO",
+      "LABEL",
     ]);
 
     const logo = screen.getByRole("img", { name: "המירוץ למיליון" });
@@ -51,9 +52,9 @@ describe("MissionPage", () => {
     expect(video).toHaveAttribute("aria-label", "סרטון תחנה ראשונה");
     expect(video).toHaveAttribute("controls");
     expect(video).toHaveAttribute("playsinline");
-    expect(video).toHaveAttribute("preload", "metadata");
+    expect(video).toHaveAttribute("preload", "none");
     expect(video).not.toHaveAttribute("autoplay");
-    expect(video).toHaveAttribute("src", "/videos/mission-01.mp4");
+    expect(video).toHaveAttribute("src", "/videos/video-02.mp4");
   });
 
   it("renders the comic station without answer choices and with its follow-up note", () => {
@@ -62,8 +63,9 @@ describe("MissionPage", () => {
     render(<MissionPage mission={mission} />);
 
     expect(screen.getByRole("heading", { name: "תחנה רביעית" })).toBeVisible();
-    expect(screen.getByText(/לא כל משימה במירוץ/)).toBeVisible();
-    expect(screen.queryAllByRole("listitem")).toHaveLength(0);
+    expect(screen.getByText(/מה אוריה הכי אוהבת לאכול/)).toBeVisible();
+    expect(screen.queryAllByRole("listitem")).toHaveLength(4);
+    expect(screen.getByText(/קראי את הקומיקס/)).toBeVisible();
     expect(screen.getByText(/מסעדת סושי/)).toBeVisible();
   });
 });

@@ -2,8 +2,18 @@ import { describe, expect, it } from "vitest";
 import { getMission, missionIds } from "@/lib/missions";
 
 describe("mission catalogue", () => {
+  it("maps final recordings by content, including swapped 7 and 8 filenames", () => {
+    const expected = { welcome: 1, "01": 2, "02": 3, "next-clue": 4, "03": 5, "04": 6, "05": 8, "06": 7, "07": 9, "08": 10 };
+    for (const [id, number] of Object.entries(expected)) {
+      const stem = `/videos/video-${String(number).padStart(2, "0")}`;
+      expect(getMission(id)).toMatchObject({ videoFile: `${stem}.mp4`, video4k: `${stem}-4k.mp4` });
+    }
+    expect(new Set(missionIds.map((id) => getMission(id)?.videoFile)).size).toBe(10);
+    expect(getMission("welcome")?.answers).toBeUndefined();
+    expect(getMission("next-clue")?.answers).toBeUndefined();
+  });
   it("returns the complete eight-station catalogue", () => {
-    expect(getMission("01")).toEqual({
+    expect(getMission("01")).toMatchObject({
       id: "01",
       pageType: "תחנה ראשונה",
       question:
@@ -14,7 +24,7 @@ describe("mission catalogue", () => {
         "עולם שבו אוריה זוכרת הכול.",
         "עולם שבו יובל חושב רק חמש מחשבות ביום.",
       ],
-      videoFile: "/videos/mission-01.mp4",
+      videoFile: "/videos/video-02.mp4",
     });
 
     expect(getMission("02")).toMatchObject({
@@ -36,15 +46,20 @@ describe("mission catalogue", () => {
       answers: ["הפלמ״ח.", "השומר.", "ניל״י.", "לח״י."],
     });
 
-    expect(getMission("04")).toEqual({
+    expect(getMission("04")).toMatchObject({
       id: "04",
       pageType: "תחנה רביעית",
       question:
-        "לא כל משימה במירוץ דורשת לרוץ.\n\nלפעמים צריך לעצור ולפתוח סיפור שנכתב במיוחד בשבילך.\n\nפתחי את החבילה שלפנייך וקראי עד העמוד האחרון.",
-      answers: undefined,
+        "לא כל משימה במירוץ דורשת לרוץ.\n\nמה אוריה הכי אוהבת לאכול?",
+      answers: [
+        "מלוואח דפי אורז.",
+        "רולדה.",
+        "סושי.",
+        "כנאפה.",
+      ],
       followUp:
-        "היום הראשון במירוץ כמעט הגיע לסיומו.\n\nכדי לצבור כוחות לקראת המשך המירוץ מחר, מחכה לכם הערב ארוחה במסעדת סושי.\n\nבתיאבון, המירוץ יימשך מחר.",
-      videoFile: "/videos/mission-01.mp4",
+        "אחרי שענית, פתחי את החבילה שלפנייך וקראי את הקומיקס עד העמוד האחרון.\n\nהיום הראשון במירוץ כמעט הגיע לסיומו.\n\nכדי לצבור כוחות לקראת המשך המירוץ מחר, מחכה לכם הערב ארוחה במסעדת סושי.\n\nבתיאבון, המירוץ יימשך מחר.",
+      videoFile: "/videos/video-06.mp4",
     });
 
     expect(getMission("05")).toMatchObject({
@@ -88,7 +103,7 @@ describe("mission catalogue", () => {
 
   it("returns no record for an unknown id", () => {
     expect(getMission("99")).toBeUndefined();
-    expect(missionIds).toEqual(["01", "02", "03", "04", "05", "06", "07", "08"]);
+    expect(missionIds).toEqual(["01", "02", "03", "04", "05", "06", "07", "08", "welcome", "next-clue"]);
   });
 
   it("freezes mission 01 and its answers at runtime", () => {

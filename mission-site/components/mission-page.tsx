@@ -28,6 +28,7 @@ export function MissionPage({ mission }: { mission: Mission }) {
         ) : null}
         <VideoPlayer
           src={mission.videoFile}
+          src4k={mission.video4k}
           poster={mission.videoPoster}
           title={`סרטון ${mission.pageType}`}
         />
