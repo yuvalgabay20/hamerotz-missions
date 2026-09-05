@@ -36,7 +36,6 @@ describe("MissionPage", () => {
       "H2",
       "OL",
       "VIDEO",
-      "LABEL",
     ]);
 
     const logo = screen.getByRole("img", { name: "המירוץ למיליון" });
@@ -57,7 +56,7 @@ describe("MissionPage", () => {
     expect(video).toHaveAttribute("src", "/videos/video-02.mp4");
   });
 
-  it("renders the comic station without answer choices and with its follow-up note", () => {
+  it("keeps the comic surprise out of the station page", () => {
     const mission = getMission("04");
     if (!mission) throw new Error("mission 04 missing");
     render(<MissionPage mission={mission} />);
@@ -65,7 +64,16 @@ describe("MissionPage", () => {
     expect(screen.getByRole("heading", { name: "תחנה רביעית" })).toBeVisible();
     expect(screen.getByText(/מה אוריה הכי אוהבת לאכול/)).toBeVisible();
     expect(screen.queryAllByRole("listitem")).toHaveLength(4);
-    expect(screen.getByText(/קראי את הקומיקס/)).toBeVisible();
+    expect(screen.queryByText(/קומיקס/)).not.toBeInTheDocument();
     expect(screen.getByText(/מסעדת סושי/)).toBeVisible();
+  });
+
+  it("keeps the overhead clue exclusively inside the video", () => {
+    const mission = getMission("next-clue");
+    if (!mission) throw new Error("next clue missing");
+    render(<MissionPage mission={mission} />);
+
+    expect(screen.getByText(/צפו בסרטון כדי לגלות את הרמז הבא/)).toBeVisible();
+    expect(screen.queryByText(/מעלייך/)).not.toBeInTheDocument();
   });
 });

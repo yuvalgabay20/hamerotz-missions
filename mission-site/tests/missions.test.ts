@@ -6,7 +6,8 @@ describe("mission catalogue", () => {
     const expected = { welcome: 1, "01": 2, "02": 3, "next-clue": 4, "03": 5, "04": 6, "05": 8, "06": 7, "07": 9, "08": 10 };
     for (const [id, number] of Object.entries(expected)) {
       const stem = `/videos/video-${String(number).padStart(2, "0")}`;
-      expect(getMission(id)).toMatchObject({ videoFile: `${stem}.mp4`, video4k: `${stem}-4k.mp4` });
+      expect(getMission(id)).toMatchObject({ videoFile: `${stem}.mp4` });
+      expect(getMission(id)).not.toHaveProperty("video4k");
     }
     expect(new Set(missionIds.map((id) => getMission(id)?.videoFile)).size).toBe(10);
     expect(getMission("welcome")?.answers).toBeUndefined();
@@ -58,7 +59,7 @@ describe("mission catalogue", () => {
         "כנאפה.",
       ],
       followUp:
-        "אחרי שענית, פתחי את החבילה שלפנייך וקראי את הקומיקס עד העמוד האחרון.\n\nהיום הראשון במירוץ כמעט הגיע לסיומו.\n\nכדי לצבור כוחות לקראת המשך המירוץ מחר, מחכה לכם הערב ארוחה במסעדת סושי.\n\nבתיאבון, המירוץ יימשך מחר.",
+        "היום הראשון במירוץ כמעט הגיע לסיומו.\n\nכדי לצבור כוחות לקראת המשך המירוץ מחר, מחכה לכם הערב ארוחה במסעדת סושי.\n\nבתיאבון, המירוץ יימשך מחר.",
       videoFile: "/videos/video-06.mp4",
     });
 
@@ -99,6 +100,13 @@ describe("mission catalogue", () => {
         "לקראת קו הסיום, נותרה שאלה אחת חשובה במיוחד:\n\nמה יובל הכי אוהב לאכול?",
       answers: ["עלים.", "דיונונים.", "פיצה.", "בשר."],
     });
+  });
+
+  it("keeps the overhead answer out of the landing-page copy", () => {
+    expect(getMission("next-clue")?.question).toBe(
+      "עברתם חידות ומבוכים, שברתם את כל הכלים.\n\nצפו בסרטון כדי לגלות את הרמז הבא.",
+    );
+    expect(getMission("next-clue")?.question).not.toMatch(/אוריה|מעלייך/);
   });
 
   it("returns no record for an unknown id", () => {

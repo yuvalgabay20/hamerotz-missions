@@ -5,13 +5,11 @@ export type Mission = Readonly<{
   answers?: readonly [string, string, string, string];
   followUp?: string;
   videoFile: string;
-  video4k?: string;
   videoPoster?: string;
 }>;
 
 const videoFiles = (number: number) => ({
   videoFile: `/videos/video-${String(number).padStart(2, "0")}.mp4`,
-  video4k: `/videos/video-${String(number).padStart(2, "0")}-4k.mp4`,
   videoPoster: "/brand/video-poster.jpg",
 });
 
@@ -64,7 +62,7 @@ const mission04 = Object.freeze({
     "כנאפה.",
   ] as const),
   followUp:
-    "אחרי שענית, פתחי את החבילה שלפנייך וקראי את הקומיקס עד העמוד האחרון.\n\nהיום הראשון במירוץ כמעט הגיע לסיומו.\n\nכדי לצבור כוחות לקראת המשך המירוץ מחר, מחכה לכם הערב ארוחה במסעדת סושי.\n\nבתיאבון, המירוץ יימשך מחר.",
+    "היום הראשון במירוץ כמעט הגיע לסיומו.\n\nכדי לצבור כוחות לקראת המשך המירוץ מחר, מחכה לכם הערב ארוחה במסעדת סושי.\n\nבתיאבון, המירוץ יימשך מחר.",
   ...videoFiles(6),
 } satisfies Mission);
 
@@ -137,7 +135,7 @@ const missions = Object.freeze({
   "next-clue": Object.freeze({
     id: "next-clue",
     pageType: "הרמז הבא",
-    question: "עברתם חידות ומבוכים, שברתם את כל הכלים.\n\nעכשיו הרמז הבא קרוב יותר ממה שאתם חושבים.\n\nאוריה, הסתכלי ממש מעלייך.",
+    question: "עברתם חידות ומבוכים, שברתם את כל הכלים.\n\nצפו בסרטון כדי לגלות את הרמז הבא.",
     ...videoFiles(4),
   } satisfies Mission),
 } satisfies Record<string, Mission>);

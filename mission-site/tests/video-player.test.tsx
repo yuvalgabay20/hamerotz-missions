@@ -3,17 +3,12 @@ import { describe, expect, it } from "vitest";
 import { VideoPlayer } from "@/components/video-player";
 
 describe("VideoPlayer", () => {
-  it("starts lightweight and preserves position when switching to 4K", () => {
-    const { container } = render(<VideoPlayer src="/videos/video-02.mp4" src4k="/videos/video-02-4k.mp4" title="סרטון" />);
+  it("offers only the regular lightweight video", () => {
+    const { container } = render(<VideoPlayer src="/videos/video-02.mp4" title="סרטון" />);
     const video = container.querySelector("video")!;
     expect(video).toHaveAttribute("preload", "none");
     expect(video).toHaveAttribute("src", "/videos/video-02.mp4");
-    video.currentTime = 3;
-    Object.defineProperty(video, "duration", { value: 20, configurable: true });
-    fireEvent.change(screen.getByLabelText("איכות צפייה"), { target: { value: "4k" } });
-    expect(video).toHaveAttribute("src", "/videos/video-02-4k.mp4");
-    fireEvent.loadedMetadata(video);
-    expect(video.currentTime).toBe(3);
+    expect(screen.queryByLabelText("איכות צפייה")).not.toBeInTheDocument();
   });
   it("renders a local inline MP4 with native controls and no autoplay", () => {
     const { container } = render(

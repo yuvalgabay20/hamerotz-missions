@@ -236,27 +236,6 @@ body {
   white-space: pre-line;
 }
 
-.video-quality {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin: 18px auto 8px;
-  color: var(--race-navy);
-  font-size: 0.9rem;
-}
-
-.video-quality select {
-  max-width: 100%;
-  border: 1px solid var(--race-gold);
-  border-radius: 8px;
-  background: white;
-  color: var(--race-navy);
-  padding: 9px 12px;
-  font: inherit;
-}
-
 .mission-answers {
   display: grid;
   grid-template-columns: 1fr;
